@@ -1,2 +1,2 @@
 # study
-自学pyshon
+自学python
