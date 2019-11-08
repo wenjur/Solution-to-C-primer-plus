@@ -1,1 +1,109 @@
+CHARTER2:
+2-1
+#include<iostream>
+using namespace std;
+int main()
+{
+	cout << "my name is	wenju." << endl
+		<< "I living in WuHan" << endl;
+	return 0;
+}
 
+2-2
+#include<iostream>
+using namespace std;
+int main()
+{
+	int distance = 0;
+	cout << "enter a distance in long:";
+	cin >> distance;
+	cout << "the converted distance is " 
+		<< distance * 220 << "yards.";
+	return 0;
+}
+
+2-3
+#include<iostream>
+using namespace std;
+int main()
+{
+	int print_t(void);
+	int print_s(void);
+	print_t();
+	print_t();
+	print_s();
+	print_s();
+	return 0;
+}
+int print_t(void)
+{
+	cout << "Three blind mice" << endl;
+	return 0;
+}
+int print_s()
+{
+	cout << "See how they run" << endl;
+	return 0;
+}
+
+2-4
+#include<iostream>
+using namespace std;
+int main()
+{
+	const int months = 12;
+	int age = 0;
+	cout << "enter your age:";
+	cin >> age;
+	cout << "you have " << age * months
+		<< " months";
+	return 0;
+}
+
+2-5
+#include<iostream>
+using namespace std;
+int main()
+{
+	int cel = 0;
+	cout << "please enter a Celsius value:";
+	cin >> cel;
+	cout << cel << " degrees Celsius is "
+		<< cel * 1.8 + 32 << " degrees Fahrenheit.";
+	return 0;
+}
+
+2-6
+#include<iostream>
+using namespace std;
+int main()
+{
+	const double Astrn = 63240;
+	cout << "enter the number of lights years:";
+	double lightyear = 0;
+	cin >> lightyear;
+	cout << lightyear << " light years = "
+		<< lightyear * Astrn 
+		<< " astronomical units.";
+	return 0;
+}
+
+2-7
+#include<iostream>
+using namespace std;
+int main()
+{
+	void print(int hours, int minutes);
+	cout << "enter the numbers of hours:";
+	int hours = 0;
+	cin >> hours;
+	cout << "enter the numbers of minutes:";
+	int minutes = 0;
+	cin >> minutes;
+	print(hours, minutes);
+	return 0;
+}
+void print(int hours, int minutes)
+{
+	cout << "Time: " << hours << ":" << minutes;
+}
