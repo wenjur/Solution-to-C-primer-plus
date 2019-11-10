@@ -1,0 +1,123 @@
+4-1
+#include<stdio.h>
+int main()
+{
+	char name[10] = { 0 };
+	char f_name[10] = { 0 };
+	printf("please input your name:\n");
+	scanf_s("%s", name,sizeof(name));
+	printf("please input your family name:\n");
+	scanf_s("%s", f_name,sizeof(f_name));
+	printf("this is your name:%s %s", name, f_name);
+	return 0;
+}
+
+4-2
+#include<stdio.h>
+int main()
+{
+	int width = 0;
+	char name[10] = { 0 };
+	printf("input your name in pinyin:");
+	scanf_s("%s", name, sizeof(name));
+	printf("***\"%s\"***\n", name);
+	printf("***\"%20s\"***\n", name);
+	printf("***\"%-20s\"***\n", name);
+	printf("***%*s***\n", strlen(name) + 3, name);
+	return 0;
+}
+
+4-3
+#include<stdio.h>
+int main()
+{
+	float num = 0;
+	printf("input your num:");
+	scanf_s("%f", &num);
+	printf("The input is %.1f or %.1e.\n", num, num);
+	printf("The input is %+.3f or %.3E.\n",num,num);
+	return 0;
+}
+
+4-4
+#include<stdio.h>
+int main()
+{
+	float height = 0;
+	char name[10];
+	printf("input your height in inches:");
+	scanf_s("%f", &height);
+	getchar();
+	printf("then input your name:");
+	scanf_s("%s", name,sizeof(name));
+	getchar();
+	printf("%s,you are %.3f feet tall.", name, height/13.12);
+
+	return 0;
+}
+ 
+4-5
+#include<stdio.h>
+int main()
+{
+	float sizeOfFile = 0;
+	float downloadSpeed = 0;
+	printf("input download speed in MB:");
+	scanf_s("%f", &downloadSpeed);
+	printf("input size of file:");
+	scanf_s("%f", &sizeOfFile);
+	printf("At %.2f megabits per second,a file of %.2f dowanloads in %.2f seconds.",
+		downloadSpeed, sizeOfFile, 8 * sizeOfFile / downloadSpeed);
+
+	return 0;
+}
+
+4-6
+#include<stdio.h>
+int main()
+{
+	char name[10] = { 0 };
+	char f_name[10] = { 0 };
+	int nameWidth = 0;
+	int f_nameWidth = 0;
+	printf("input your name:");
+	scanf_s("%s", name, sizeof(name));
+	printf("input your family name:");
+	scanf_s("%s", f_name, sizeof(f_name));
+	printf("%s %s\n", name, f_name);
+	printf("%*d %*d\n", strlen(name), strlen(name), strlen(f_name), strlen(f_name));
+	printf("%s %s\n", name, f_name);
+	printf("%-*d %-*d\n", strlen(name), strlen(name), strlen(f_name), strlen(f_name));
+	return 0;
+}
+
+4-7
+#include<stdio.h>
+#include<float.h>
+int main()
+{
+	float flt = 1.0 / 3.0;
+	double dbl = 1.0 / 3.0;
+	printf("%-20.6f %-20.12f %-20.16f\n", flt, flt, flt);
+	printf("%-20.6f %-20.12f %-20.16f\n", dbl, dbl, dbl);
+	printf("float precision:%d digits\n", FLT_DIG);
+	printf("double precision:%d digits\n", DBL_DIG);
+	return 0;
+}
+
+4-8
+#include<stdio.h>
+#define LITRE 3.785
+#define KILOMETER 1.609
+int main()
+{
+	float lenth = 0;
+	float gallon = 0;
+	printf("input lenth in kilometer:");
+	scanf_s("%f", &lenth);
+	printf("input consumed gasoline in gallon:");
+	scanf_s("%f", &gallon);
+	printf("for consuming one gallon you can run %.1f miles\n",
+		(lenth / KILOMETER) / (gallon / LITRE));
+	return 0;
+}
