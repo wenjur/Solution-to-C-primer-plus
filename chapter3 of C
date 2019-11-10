@@ -1,0 +1,73 @@
+3-1
+#include<stdio.h>
+int main()
+{
+	char c;
+	scanf_s("%d",&c);
+	printf("%c",c);
+	return 0;
+}
+
+3-2
+#include<stdio.h>
+int main()
+{
+	printf("\aStartled by the sudden sound,Sadlly shouted,"
+		"\"By the Great Pumpkin,what was that!\"\n");
+	return 0;
+}
+
+3-4
+#include<stdio.h>
+int main()
+{
+	double i;
+	printf_s("Enter a floating point value:");
+	scanf_s("%lf", &i);
+	printf_s("fixed point notation:%f\n", i);
+	printf_s("exponential notation:%e\n", i);
+	printf_s("p notation:%.2a", i);
+	return 0;
+ }
+
+3-5
+#include<stdio.h>
+#define RATE 3.156e7
+int main()
+{
+	printf_s("Please input your year:");
+	int year;
+	scanf_s("%d", &year);
+	getchar();
+	printf_s("you total seconds:%.2f", RATE * year);
+	return 0;
+}
+
+3-6
+#include<stdio.h>
+#define RATE_P 3.0e-23
+#define RATE_W 950
+int main()
+{
+	printf_s("Please input quart:");
+	float quart;
+	scanf_s("%f", &quart);
+	getchar();
+	printf_s("mol of water:%.2e", quart*RATE_P*RATE_W);
+
+	return 0;
+}
+
+3-7
+#include<stdio.h>
+#define INCH 2.54
+int main()
+{
+	printf("input your height:");
+	float height;
+	scanf_s("%f", &height);
+	getchar();
+	printf("your height:%.2f", height / INCH);
+
+	return 0;
+}
