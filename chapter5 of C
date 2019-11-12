@@ -1,0 +1,141 @@
+5-1
+#include<stdio.h>
+int main()
+{
+const int minToHou = 60;
+	int minutes = 0;
+	int hour = 0;
+	printf("input minutes (<=0 to quit):");
+	scanf_s("%d", &minutes);
+	while (minutes > 0)
+	{
+		printf("The converted time:%d hours %d minutes\n",
+			minutes / minToHou, minutes % minToHou);
+		printf("input minutes (<=0 to quit):");
+		scanf_s("%d", &minutes);
+	}
+	return 0;
+}
+
+5-2
+#include<stdio.h>
+int main()
+{
+	int num = 0;
+	int i = 0;
+	printf("input a number:");
+	scanf_s("%d", &num);
+	do {
+		printf("%d ", num++);
+		i++;
+	} while (i < 11);
+	return 0;
+}
+
+5-3
+#include<stdio.h>
+//尝试一下新的返回值EXIT_SUCCESS(0)定义在头文件stdlib中
+#include<stdlib.h>
+int main()
+{
+	int days = 0;
+	int i = 0;
+	printf("enter days(<=0 to quit): ");
+	//scanf返回值判断输入是否成功
+	while (scanf_s("%d", &days) && days > 0 )
+	{
+		printf("%d days are %d weeks, %d days.\n", days, days / 7, days % 7);
+		printf("enter days(<=0 to quit): ");
+	}
+	return EXIT_SUCCESS;
+}
+
+
+5-4
+#include<stdio.h>
+int main()
+{
+	const float toCentimeter = 30.48;
+	const float toInch = 2.54;
+	float height = 0;
+	printf("input your height in centimeters(<=0 to quit):");
+	scanf_s("%f", &height);
+	int feet = (int)(height / toCentimeter);
+	float inch = (height - feet * toCentimeter) / toInch;
+	while (height > 0)
+	{
+		printf("%.2f cm = %d feet,%.2f inches\n",
+			height, feet, inch);
+		printf("input your height in centimeters(<=0 to quit):");
+		scanf_s("%f", &height);
+		feet = (int)(height / toCentimeter);
+		inch = (height - feet * toCentimeter) / toInch;
+	}
+
+	return 0;
+}
+
+5-5
+
+5-6
+
+5-7
+#include<stdio.h>
+double cube(double num);
+int main()
+{
+	double num = 0;
+	printf("input a number of double:");
+	scanf_s("%lf", &num);
+	printf("%.2f", cube(num));
+	return 0;
+}
+double cube(double num)
+{
+	return num * num * num;
+}
+
+5-8
+#include<stdio.h>
+int main()
+{
+	int firope = 0;
+	const int secope;
+	printf("This program computes moduli.\n");
+	printf("Enter an integer to serve as the second operand:");
+	scanf_s("%d", &secope);
+	printf("Now enter the first operand:");
+	scanf_s("%d", &firope);
+	while (firope > 0)
+	{
+		printf("%d %% %d is %d\n", firope, secope, firope % secope); 
+		printf("Enter next number for first operand (<= 0 to quit):");
+		scanf_s("%d", &firope);
+	}
+	printf("Done");
+	return 0;
+}
+
+5-9
+#include<stdio.h>
+int Temperatures(double f_temp);
+int main()
+{
+	double f_temp = 0;
+	printf("Enter a double Fahrenheit value (q to quit):");
+	while ((scanf_s("%lf", &f_temp)) == 1)
+	{
+		Temperatures(f_temp);
+		printf("Enter again (q to quit):");
+	}
+	return 0;
+}
+int Temperatures(double f_temp)
+{
+	const double a = 5.0 / 9.0;
+	const int b = 32;
+	const double c = 273.16;
+	printf("The converted Celsius tempture is %.2f.\n", (f_temp-b) * a);
+	printf("And Kelvin tempeture is %.2f.\n",(f_temp - b) / a + c);
+	return 0;
+}
