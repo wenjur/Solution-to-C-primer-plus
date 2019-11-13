@@ -1,0 +1,124 @@
+3-1
+#include<iostream>
+int main()
+{
+	std::cout << "enter your height in inch __\b\b";
+	const int confact = 12;
+	int height = 0;
+	std::cin >> height;
+	std::cout << "you height: " << height / confact
+		<< " feet," << height - (height / confact) * confact
+		<< " inches.";
+	return 0;
+}
+
+3-2
+#include<iostream>
+int main()
+{
+	using namespace std;
+	cout << "enter your height in foot and inch\n";
+	cout << "how many feet? ";
+	int foot = 0;
+	cin >> foot;
+	cout << "how many inches? ";
+	double inch = 0;
+	cin >> inch;
+	cout << "then enter your height in pound\n"
+		<< "how many pounds? ";
+	double pound = 0;
+	cin >> pound;
+	const int foot_to_inch = 12;
+	const double inch_to_meter = 0.0254;
+	const double kg_to_pound = 2.2;
+	double height = (foot * foot_to_inch + inch) * inch_to_meter;
+	double weight = pound / kg_to_pound;
+	cout << "your BMI: " << weight / pow(height, 2);
+	return 0;
+}
+
+3-3
+#include<iostream>
+int main()
+{
+	using std::cout;
+	using std::cin;
+	cout << "enter a latitude in degrees,minutes,and seconds:\n";
+	cout << "first,enter the degrees: ";
+	int degree = 0;
+	cin >> degree;
+	cout << "next,enter the minutes of arc: ";
+	int minute = 0;
+	cin >> minute;
+	cout << "finally,enter the seconds of arc: ";
+	int second = 0;
+	cin >> second;
+	//conversion factor:转换因子
+	const int confact = 60;
+	cout << degree << " degrees, "
+		<< minute << " minutes"
+		<< second << " seconds = "
+		<< degree + double(minute) / confact + double(second) / pow(confact, 2);
+	//强制转换的C++表示，类似于函数的用法
+	return 0;
+}
+
+3-4
+#include<iostream>
+int main()
+{
+	std::cout << "enter the number of seconds: ";
+	long second = 0;
+	std::cin >> second;
+	const int dayhour = 24;
+	const int hourmin = 60;
+	const int minsec = 60;
+	//下面这段代码写的好头疼，也没找到简单的方法
+	std::cout << second << " seconds = "
+		<< second / (dayhour * hourmin * minsec)
+		<< " days, "
+		<< (second % (dayhour * hourmin * minsec)) / (hourmin * minsec)
+		<< " hours, "
+		<< ((second % (dayhour * hourmin * minsec)) % (hourmin * minsec)) / minsec
+		<< " minutes, "
+		<< ((second % (dayhour * hourmin * minsec)) % (hourmin * minsec)) % minsec
+		<< " seconds";
+	return 0;
+}
+
+3-5
+#include<iostream>
+int main()
+{
+	std::cout << "enter world's population: ";
+	long long wpopu = 0;
+	std::cin >> wpopu;
+	std::cout << "enter thr population of the US: ";
+	long long upopu = 0;
+	std::cin >> upopu;
+	std::cout << "the population of the US is "
+		<< 100 * (double(upopu) / wpopu)
+		<< "% of the world population.";
+	return 0;
+}
+
+3-6
+#include<iostream>
+#define GALLIT 3.875
+#define KMMILE 0.6214
+int main()
+{
+	std::cout << "enter drive mileage in mile: ";
+	int mile = 0;
+	std::cin >> mile;
+	std::cout << "enter fuel consumption in gallon: ";
+	int fuel = 0;
+	std::cin >> fuel;
+	std::cout << "your car consumes "
+		<< (fuel * GALLIT * KMMILE * 100) / mile
+		<< " litres gasoline for 100 miles.";
+	return EXIT_SUCCESS;
+}
+
+3-7
+//和3-6一样，就不再啰嗦了
