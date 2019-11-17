@@ -1,0 +1,300 @@
+5-1
+#include<iostream>
+int main()
+{
+	int a = 0;
+	int b = 0;
+	int i = 0;
+	//稍后会演示更好的输入验证，这里就不过于严谨了
+	do {
+		std::cout << "enter two numbers(q to quit): " << std::endl;
+		std::cout << "num #" << ++i << ": ";
+		std::cin >> a;
+		std::cout << "num #" << ++i << ": ";
+		std::cin >> b;
+		std::cout << "sum of all these numbers: "
+			<< (b - a + 1) * (a + b) / 2
+			<< std::endl;
+	} while (std::cin && a < b);
+	return 0;
+}
+
+5-2
+/*我感觉计算机算完要崩
+结果计算机算完什么事都没有*/
+#include<iostream>
+#include<array>
+int main()
+{
+	const int SIZE = 100;
+	std::array<long double, SIZE>factor;
+	for (int i = 0; i < SIZE; i++)
+	{
+		if (i == 0)
+			factor[i] = 1;
+		else
+			factor[i] = factor[i - 1] * i;
+	}
+	std::cout << factor[SIZE - 1];
+	return 0;
+}
+
+5-3
+/*这段代码我将初步演示输入验证和错误处理机制，事实证明真简单(我其实写了一个小时,哎)*/
+#include<iostream>
+int main()
+{
+	int i = 0;
+	//块里定义的变量也是有不方便的地方的
+	int sum = 0;
+	while (1)
+	{
+		std::cout << "enter a num(<= 0 to quit): ";
+		//std::cin>>i的括号也不能去，不加也不会报错，但是
+		while (!(std::cin >> i))
+		{
+			int ch;
+			/*这一段要是把clear方法放在底下那个while的后面，也会发生非常有
+			意思的事。输入错误处理机制在这两章讲的比较多，不可眼高手低，函数
+我都会，可真处理错误的时候，会一脸懵逼，本渣渣在这里纠结好久了。
+			clear重置输入但不会清空缓冲区。目前学的C++pp这本书最大的收获是
+			对于缓冲区输入法的理解深入了不少，得益于书上介绍io函数是也会有意
+			地提及对空白的处理原则,谭老那本c是不会扯这些的*/
+			std::cin.clear();
+			while ((ch = std::cin.get()) != '\n')
+				continue;
+			std::cout << "enter error,please enter again: ";
+		}
+		
+		/*下面的这个sum+=i的括号不能去，可能<<的优先级比+=高，待我查查
+		查明：<<并不是运算符。结合编译器给出的错误，可能原因是+=运算符
+		将该语句前面std::cout << << sum+=i看作的操作数1，i看作操作数2
+		因而报错，前面即使可以被转换为bool值，也是常数。至于上面的那个问
+		题，本渣渣木有查出来。总之，遇到怪怪的表达式，加括号就对了
+很奇怪的是i+1就可以不加括号，这是歧视还是咋地？问题待解决*/		
+if (i > 0)
+			std::cout << "sum of all numbers you have enter: "
+				<< (sum += i) << std::endl;
+		else
+			break;
+	}
+	return 0;
+}    
+
+5-4
+/*敲代码前昧着良心插播广告，你想成为github上万星开源项目的参与者吗？
+那还等什么？可爱的蓝孩子看这里https://github.com/komeiji-satori/Dress
+不服输的女汉子们看这里https://github.com/greenaway07/GirlDress*/
+#include<iostream>
+int main()
+{
+	double c = 100;
+	double d = 100;
+	int year = 0;
+	const double investVol = 100;
+	const double cpofRate = 0.05;
+	const double dpofRate = 0.1;
+	while (c <= d)
+	{
+		++year;
+		c = c * pow(1 + cpofRate, year);
+		d = d + year * dpofRate * investVol;
+	}
+	//答案是否正确我并没有去验证
+	std::cout << "after " << year << " years" << std::endl
+		<< "Cleo's return is " << c - investVol << std::endl
+		<< "Daphne's return is " << d - investVol << std::endl;
+	return 0;
+}
+
+5-5
+#include<iostream>
+int main()
+{
+	/*在此想到了指向字符串的指针数组，并且不用string类解决这个问题，
+	就没按照书上的要求来了。书上的太简单了，本渣渣不屑于去重复写*/
+	char* month[12];
+	int sum = 0;
+	for (int sale = 1, i = 0; i < 12; i++)
+	{
+		month[i] = new char[35];
+		//搞了半天原来是这里错了，第二个参数原本写的是sizeof(*(month[i]))
+		sprintf_s(month[i], 35, "enter the month #%d your sale: ", sale++);
+	}
+	std::cout << "you want to sell books? well,"
+		<< "I can help you count the sales for free."
+		<< std::endl;
+	//给自己挖坑了，系统不停地报错，编译器不报错，我还看不明白什么情况
+	int sale[12];
+	for (int i = 0; i < 12; i++)
+	{
+		std::cout << month[i];
+		std::cin >> sale[i];
+		sum += sale[i];
+		delete[] month[i];
+	}
+	std::cout << "ok,during the twelve months,you have earned "
+		<< sum << " yuan." << std::endl;
+	std::cout << "and now,you should pay me.enter it,"
+			<< " I will receive: ";
+	while(1)
+	{
+		double pay = 0;
+		std::cin >> pay;
+		if (pay > 1e100)
+		{
+			std::cout << "ok,nice cooperate!";
+			break;
+		}
+		else
+		{
+			std::cout << "oh,no! too little!"
+				<< "you do really mean!"
+				<< "enter again: ";
+			std::cin >> pay;
+		}
+	}
+	return 0;
+}
+
+5-6
+/*我发现这才第五章，代码就这么难写了(想敷衍的话倒是很简单)
+从第五章开始，知识点变多,要开始进入遗忘期了。学习速度小于
+遗忘速度避免方法是使劲敲代码，敲到生活不能自理的那种*/
+#include<iostream>
+int main()
+{
+	const char* month[12] =
+	{
+		"month #1: ",
+		"month #2: ",
+		"month #3: ",
+		"month #4: ",
+		"month #5: ",
+		"month #6: ",
+		"month #7: ",
+		"month #8: ",
+		"month #9: ",
+		"month #10: ",
+		"month #11: ",
+		"month #12: ",
+	};
+	//如果支持C11标准，{}初始化可直接将其清零
+	int sale[3][12] = {};
+	int sum = 0;
+	//无疑取一个别人看不懂的变量名我是非常成功的
+	int yeasum1 = 0;
+	int yeasum2 = 0;
+	int yeasum3 = 0;
+	for (int i = 0; i < 3; i++)
+	{
+		std::cout << "*******************************" <<std::endl;
+		std::cout << "please input sale of year #"
+			<< i + 1 << std::endl;
+		std::cout << "*******************************" << std::endl;
+		for (int j = 0; j < 12; j++)
+		{
+			std::cout << month[j];
+			std::cin >> sale[i][j];
+			sum = sum + sale[i][j];
+			if (i == 0) yeasum1 += sale[i][j];
+			else if (i==1) yeasum2 += sale[i][j];
+			else  yeasum3 += sale[i][j];
+		}
+	}
+	std::cout << "in the past three years,you have earned "
+		<< sum << " yuan." << std::endl << "in the first year,"
+		<< "you earned " << yeasum1 << " yuan." << std::endl
+		<< "the second year you earned " << yeasum2 << " yuan"
+		<< std::endl << "last year you earned " << yeasum3 << " yuan."
+		<< std::endl << "this time really for free,don't worry.";
+	return 0;
+}
+
+5-7
+//如果说想入门c的话需要敲至少2000行代码，那么c++是多少呢
+#include<string>
+#include<iostream>
+struct car {
+	std::string manfacturer;
+	int year;
+};
+int main()
+{
+	std::cout << "how many cars do you wish to catalog: ";
+	int carnum = 0;
+	std::cin >> carnum;
+	std::cin.get();
+	car *carp = new car[carnum];
+	for (int i = 0; i < carnum; i++)
+	{
+		std::cout << "Car #" << i+1 << ": " << std::endl
+			<< "please enter the make: ";
+		getline(std::cin, carp[i].manfacturer);
+		std::cout << "please enter the year made: ";
+		std::cin >> carp[i].year;
+		std::cin.get();
+	}
+	std::cout << "here is your collection:" << std::endl;
+	for (int i = 0; i < carnum; i++)
+	{
+		std::cout << (carp + i)->year << " "
+			<< carp[i].manfacturer << std::endl;
+	}
+	delete[]carp;
+	return 0;
+}
+
+5-8
+#include<iostream>
+#include<cstring>
+int main()
+{
+	char arr[10];
+	int i = 0;
+	int word = 0;
+	std::cout << “enter words (to stop, type the word done): << std::endl;
+	//cin 读取字符数组时是以空白为分隔的
+	while (std::cin >> arr && strcmp(arr, "done"))
+		++word;
+	std::cout << "you entered a total of " << word << " words.";
+	return 0;
+}
+
+5-9
+#include<iostream>
+#include<string>
+int main()
+{
+	std::cout << "enter words (to stop,type the word done):" << std::endl;
+	std::string ar = "done";
+	int word = 0;
+	std::string arr;
+	while (std::cin >> arr && ar != arr)
+		word++;
+	std::cout << "you entered a total of " << word << " words.";
+	return 0;
+}
+
+5-10
+//这里写的我想睡觉
+#include<iostream>
+int main()
+{
+	std::cout << "enter number of rows: ";
+	int row = 0;
+	std::cin >> row;
+	for ( int i = 0; i < row; i++)
+	{
+		for (int j = 0; j < row; j++)
+		{
+			/*这个j>row-i-2实际上是j+1>row-(i+1)。j+1是把每一行按1至5排
+			列，不是0至4。i+1是每一行要打印的*的个数。row-(i+1)即是要开始
+			打印*时j的最小取值再减一，即j+1>row-(i+1)*/
+			if (j > row - i - 2) std::cout << '*';
+			else std::cout << '.';
+		}
+		std::cout << std::endl;
+	}
+  return 0;
+}
