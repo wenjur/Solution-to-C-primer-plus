@@ -1,0 +1,226 @@
+6-1
+#include<stdio.h>
+int main()
+{
+	char i;
+	int j = 0;
+	char str[26];
+	for (j=0,i = 'a'; i < 'a' + 26; i++,j++)
+	{
+		str[j] = i;
+	}
+	for (j = 0; j < 26; j++)
+	{
+		printf("%c", str[j]);
+	}
+	return 0;
+}
+
+6-2
+/*这道题没按书上要求写，想换个方法，而且书上那算法不简洁，不符合
+我对代码的审美要求*/
+#include<stdio.h>
+int main()
+{
+	int i = 0;
+	int j = 0;
+	for (i = 0; i < 5; i++)
+	{
+		for (j = 0; j < i + 1; j++)
+			printf("$");
+		putchar(10);
+	}
+	return 0;
+}
+
+6-3
+#include<stdio.h>
+int main()
+{
+	int i = 0;
+	char j;
+	for (i = 0; i < 6; i++)
+	{
+		for (j = 'F'; j > 'F' - i - 1; j--)
+			printf("%c", j);
+		putchar(10);
+	}
+	return 0;
+}
+
+6-4
+#include<stdio.h>
+int main()
+{
+	/*这段函数用了四个变量，其实应该可以只使用两个的，也有其他方法
+	即使我上学期学过了c,现在在写循环语句时也要在入口和出口条件上花
+	不少时间去检验正确性，总之循环语句比较麻烦的也就是这个条件判断
+	了，还有就是逻辑上的架构，如何把逻辑理清也是很麻烦，对于我这个
+	逻辑菜鸟简直是噩梦*/
+	int i = 0;
+	char j = 0;
+	int k = 0;	//借助k确定每一行的初始值
+	int l = 0;	//借助l来标记每一行循环输出的终止点
+	for (i = 0; i < 6; i++)
+	{
+		for (j = 'A' + k, l = j + i + 1; j < l; j++, k++)
+			printf("%c", j);
+		putchar(10);
+	}
+	return 0;
+}
+
+6-5
+#include<stdio.h>
+int main()
+{
+	//为什么要定义时初始化值，这是一个良好的习惯
+	int i = 0;
+	char j = 0;
+	char a = 0;
+	printf("Enter a capital,then I wil output a pyramid:");
+	scanf_s("%c", &a, sizeof(a));
+	//千万别觉得for里又给i赋值重复啰嗦，书上也强调了初始化入口的重要性
+	for (i = 0; i < 5; i++)
+	{
+		/*32是空格ASCII值，初学的话这个用法也是可以参考一下的
+		考虑到移植问题，键盘敲个空格就行，我是为了强迫自己去记
+		忆ASCII值*/
+		for (j = 0; j < 4 - i; j++)
+			putchar(32);
+		//顺序输出,(i+1)是控制出口条件
+		for (j = a - 4; j < a - 4 + i + 1; j++)
+			printf("%c", j);
+		//从中间右侧一列开始倒序输出,a-4+i是最中间一列,a-5是出口条件
+		for (j = a - 4 + i - 1; j > a - 5; j--)
+			putchar(j);
+		printf("\n");
+	}
+	return 0;
+}
+
+6-6
+//这题属实没读懂什么意思
+#include<stdio.h>
+int main()
+{
+	int arr[10];
+	for (int i = 0; i < 10; i++)
+		arr[i] = i + 1;
+	for (int i = 0; i < 10; i++)
+		printf("%d %20d %20d\n", i, i*i, i*i*i );
+	return 0;
+}
+
+6-7
+//从这里开始我更改一下写循环的风格
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+	char c = 0;
+	char arr[10];
+	scanf_s("%s", arr,sizeof(arr));
+	for (int i = strlen(arr); i > 0; i--) {
+		printf("%-2c", arr[i - 1]);
+	}
+	return 0;
+}
+
+6-8
+#include<stdio.h>
+int main()
+{
+	double a = 0, b = 0;
+	printf("enter two float numbers: ");
+	while (scanf_s("%lf %lf", &a, &b) == 2) {
+		if (a < b) {
+			//vs2019,文件.c后缀,并不记得c语言可以在
+			//非开头出定义变量，可能语句块是个例外吧
+			double temp; temp = a; a = b; b = temp;
+		}
+		printf("result: %.2f\n", (a - b) / (a * b));
+		printf("enter two float numbers: ");
+	}
+	return 0;
+}
+
+6-9
+#include<stdio.h>
+//inline double compute(double a, double b) {return (a - b) / (a * b);}
+double compute(double a, double b);
+int main()
+{
+	double a = 0, b = 0;
+	printf("enter two float numbers: ");
+	while (scanf_s("%lf %lf", &a, &b) == 2) {
+		if (a < b) {
+			double temp; temp = a; a = b; b = temp;
+		}
+		printf("result: %.2f\n", compute(a,b));
+		printf("enter two float numbers: ");
+	}
+	return 0;
+}
+//像这种执行时间和调用消耗时间差不多的，可以使用内联函数
+//内联是c++的特性，c也可以用，主要是看编译器是否支持
+double compute(double a, double b){
+	return (a - b) / (a * b);
+}
+
+6-10
+#include<stdio.h>
+int main()
+{
+	int a, b;
+	printf("enter lower and upper integer limits: ");
+	while (scanf_s("%d %d", &a, &b) == 2) {
+		if (a == b || a > b) break;
+		int sum = 0;
+		for (; a < b + 1; a++) { sum += a * a; }
+		printf("the sum of the square from %d to %d is %d\n", a, b, sum);
+		printf("enter next set of litmits: ");
+	}
+	printf("Done.");
+	return 0;
+}
+
+6-11
+#include<stdio.h>
+//这里好像还没学define指令，那先混个脸熟吧
+#define SIZE 8
+int main()
+{
+	int i = 0;
+	int j = 0;
+	int arr[SIZE];
+	//下面演示一种处理数据流的方法，一般数据流会有一个结尾标识符，这里用非数值char来表示
+	//也可以通过键盘按下ctrl+z后再按下enter来模拟结尾标识
+	//没有按照书上的来写，我是顺序输出的，方便演示
+	printf("enter 8 numbers with a char end: ");
+	while (scanf_s("%d", &arr[i++]))
+		printf("%-2d", arr[j++]);
+	return 0;
+}
+
+6-12
+#include<stdio.h>
+#include<math.h>
+int main()
+{
+	int a = 0;
+	double sum1 = 0;
+	double sum2 = 0;
+	printf("enter the sequence limit(<= 0 to quit): ");
+	while (scanf_s("%d", &a) && a > 0) {
+		sum1 = sum2 = 0;
+		for (int i = 0; i < a; i++) {
+			sum1 += 1.0 / (i + 1);
+			sum2 += pow(-1, i) * 1.0 / (i + 1);
+		}
+		printf("sum of the two sequence are %f and %f\n", sum1, sum2);
+		printf("enter the next sequence limit(<= 0 to quit): ");
+	}
+	printf("Done.");
+	return 0;
+}
