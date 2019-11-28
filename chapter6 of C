@@ -224,3 +224,118 @@ int main()
 	printf("Done.");
 	return 0;
 }
+
+6-13
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+#define SIZE 8
+int main()
+{
+	int i = 0;
+	int arr[SIZE];
+	//我服了，之前一直用的vc++6.0，用pow函数没事，现在vs警告就来了
+	//其原型是double pow(double,double),因此double赋给int类型arr[i]就警告
+	//在此错误就不改了，留着看。再有就是这个i++的使用是个错误范例
+	//虽然运行无误，但是在两边都有i的情况下使用i++是不合适的
+	for (i = 0; i < SIZE; arr[i++] = pow(2, i));
+	i = 0;
+	do { printf("%d ", arr[i]); } while (i++ < SIZE - 1);
+	return EXIT_SUCCESS;
+}
+
+6-14
+#include<stdio.h>
+#define SIZE 8
+int main()
+{
+	int i = 0;
+	int arr[SIZE];
+	int arr1[SIZE];
+	printf("enter eight numbers end with a char: ");
+	//两个条件判定位置不能颠倒
+	while (i < SIZE && scanf_s("%d", &arr[i])) { 
+		if (i == 0) arr1[i] = arr[i];
+		else arr1[i] = arr1[i - 1] + arr[i];
+		++i;
+	}
+	for (i = 0; i < SIZE; printf("%-3d", arr[i++]));
+	printf("\n");
+	for (i = 0; i < SIZE; printf("%-3d", arr1[i++]));
+	return 0;
+}
+
+6-15
+#include<stdio.h>
+#define SIZE 256
+int main()
+{
+	//这段代码就这么点，我还花了快十分钟，真想一巴掌呼死自己
+	int i = 0;
+	int j = 0;
+	char arr[SIZE]={0};
+	printf("enter chars flow: ");
+	//关于vs的io函数新特性可以在遇到问题时去查就行
+	while (scanf_s("%c", &arr[i],sizeof(char)) && arr[i++]!='\n');
+	//下面这句要是不加if限定的话，i可能会等于-1，这样会访问到不该访问的内存
+	//我寻思着这敲个代码怎么这么多坑
+	if (i > 0) arr[--i] = '\0';
+	for (j = i - 1; j > -1; printf("%c", arr[j--]));
+	return 0;
+}
+
+6-16
+#include<stdio.h>
+#include<math.h>
+int main()
+{
+	int i = 0;
+	double dei = 100;
+	double dap = 100;
+	const double Dei = 0.05;
+	const double Dap = 0.1;
+	while (dei <= dap) {
+		dei *= (1 + Dei);
+		dap += 100 * Dap;
+		++i;
+	}
+	printf("after %d years,Deirdre earn %.2f yuan,Daphne earn %.2f yuan"
+		, i, dei - 100, dap - 100);
+	return 0;
+}
+
+6-17
+#include<stdio.h>
+int main()
+{
+	double money = 1e6;
+	int year = 0;
+	double moneyout = 1e5;
+	double rate = 0.08;
+	while (money > 0) {
+		money *= (1 + rate);
+		money -= moneyout;
+		++year;
+	}
+	printf("after %d years,he has no money", year);
+}
+
+6-18
+#include<stdio.h>
+#define DENBARNUM 150
+int main()
+{
+	const int initfriends = 5;
+	int friends[10];
+	int week = 0;
+	friends[week++] = initfriends;
+	do {
+		friends[week] = 2 * (friends[week-1] - 1);
+	} while (friends[week++] < DENBARNUM);
+	for (int i = 1; i < week; i++) {
+		printf("week #%d: doctor Rabnud has %d friends.\n", i, friends[i]);
+	}
+	printf("Done.");
+	return 0;
+}
+
