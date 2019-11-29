@@ -1,5 +1,5 @@
 6-1
-'''
+```cpp
 #include<stdio.h>
 int main()
 {
@@ -15,7 +15,8 @@ int main()
 		printf("%c", str[j]);
 	}
 	return 0;
-}'''
+}
+```
 
 6-2
 /*这道题没按书上要求写，想换个方法，而且书上那算法不简洁，不符合
