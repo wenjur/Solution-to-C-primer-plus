@@ -1,0 +1,250 @@
+6-1
+#include<iostream>
+#include<cctype>
+int main()
+{
+	int i = 0;
+	std::cout << "enter anything you want end with @" << std::endl
+		<< "I will show you what you entered except numbers"
+		<< std::endl;
+	char ch;
+	while (std::cin.get(ch) && ch != '@') {
+		if (isalpha(ch)) {
+			if (islower(ch)) ch=toupper(ch);
+			else ch=tolower(ch);
+		}
+		//眼睛看来是近视的不行啊，书上明摆着写的alnum是数字或字母，我还用
+		if (isdigit(ch)) continue;
+		std::cout << ch;
+		i++;
+	}
+	//在此啰嗦一句，cin.get(ch)版本会吃掉换行，并且把它赋给ch,还可以打印输出
+	std::cout << "Done.";
+	return 0;
+	//头疼，输入的字符不回显，我还找不到问题在哪里，快00：30了，睡觉!!!
+}
+
+6-2
+#include<iostream>
+#include<array>
+#define SIZE 10
+int main()
+{
+	std::array<double, SIZE>arr;
+	std::cout << "enter no more than 10 donations: ";
+	int i = 0;
+	double sum = 0;
+	//我原本的想法是没有下面的i<SIZE的，输完十个数报错了,这里多少也可
+	//以想到是和cin有关，看来以后直接想用while(std::cin >> variable)
+	//是不行的，如果没有文件尾标识，只要正确输入，条件就一直为真，可是
+	//当缓冲区被读取完了，没有字符输入的情况，此时while按理说是应该等
+	//待输入以便判断真假，可是系统直接报错，这个情况输入内存非法修改，
+	//即数组越界了。我寻思着，这cin也不处理换行符啊，怎么就越界了呢?
+	//绞尽脑汁后，终于明白了。第十次输入完成后，i值为11，而此时while
+	//不管有没有输入流，std::cin >> arr[i]都需要判断真假，执行arr[i]时
+	//访问了第十一个位置
+	while (std::cin >> arr[i]) sum += arr[i++];
+	double average = sum / i;
+	int j = 0;
+	while (arr[j] <= average) j++;
+	std::cout << "average of these numbers is " << average
+		<< ".and " << i - j << " numbers bigger than average."
+		<< std::endl << "done.";
+	return 0;
+}
+
+6-3
+#include<iostream>
+#include<cstdbool>
+int main()
+{
+	std::cout << "please enter one of the following choices:" << std::endl
+		<< "c) carnivore\tp) pianist" << std::endl
+		<< "t) tree\t\tg) game" << std::endl;
+	char ch;
+	std::cout << "please enter a c,p,t,or g: ";
+
+	//这两行代码准确来说不是一个好主意
+	while (!(std::cin >> ch) || (ch != 'c' && ch != 'p' && ch != 't' && ch != 'g')) {
+		std::cout << "please enter a c,p,t,or g: ";
+	}
+	switch (ch){
+		case 'c':std::cout << "carnivore eat meat"; break;
+		case 'p':std::cout << "pianist play piano"; break;
+		case 't':std::cout << "a maple is a tree"; break;
+		case 'g':std::cout << "boys should loves games more than their girfriend"; break;
+		}
+	return 0;
+}
+6-4
+//我实在是没有看明白这题要我怎么输出（其实是懒）
+
+6-5
+#include<iostream>
+int main()
+{
+	//感觉自己脑袋是不是进水了，简单的一个if else让我给写这么复杂
+	//这要是别人第一眼看下去估计大概率上是不知道我在干什么
+	//不过这里牵扯到一个数学问题，记得以前数学课有计算这种类似的题的其它方法
+	//所以这里就想着把这个算法给实现出来
+	std::cout << "enter your salary: ";
+	int salary = 0;
+	double tax = 0;
+	int arr[4] = { 0 };
+	while (std::cin >> salary && salary > 0) {
+		int i = 0;
+		if (salary <= 5000) i = 0;
+		else if (salary <= 15000) i = 2;
+		else if (salary <= 35000) i = 3;
+		else i = 4;
+		for (int j = 0; j < i; j++) arr[j] = 1;
+		tax = arr[1] * (salary - 5000) * 0.1 + arr[2] * (salary - 15000) * 0.05
+			+ arr[3] * (salary - 35000) * 0.05;
+		std::cout << "your tax is " << tax << "." << std::endl << "enter your salary: ";
+	}
+	std::cout << "Done.";
+	return 0;
+}
+
+6-6
+#include<iostream>
+//如果不是特别的需要方便的话，一般我选择使用数组，更快
+typedef struct {
+	char name[10];
+	double num;
+}Patron;
+int main()
+{
+	std::cout << "please tell me how many items of data you are goig to enter: ";
+	int i = 0;
+	std::cin >> i;
+	Patron* p = new Patron[i];
+	//为了方便(懒)起见，名字不包含空格，就是一个单词
+	int j = 0;
+	while (j < i) {
+		std::cout << "enter the donor'name and his donation: ";
+		//这里又说我非法写入了heap buffer之后的内存，奇怪了，这哪儿错了？
+		//首先可以排除cin的拼接问题，因为只有第一组在输出时错误，说明可能是
+		//第一组在输入时就有了问题。可是奇怪的是后面的都是正常的。
+		//已知将j++移到外面或不使用cin拼接(j++仍在里面)二者都不会带来错误
+		//又快到00:30了，还真是有缘啊，睡觉去
+		std::cin >> (p + j)->name >> (p + j++)->num;
+	}
+	std::cout << "Grand Patrons:" << std::endl;
+	int tab = 0;	//标记某种类别是否为none
+	for (j = 0; j < i; j++) {
+		if (p[j].num > 10000) {
+			std::cout << p[j].name << "\t" << p[j].num << std::endl;
+			tab = 1;
+		}
+	}
+	if (tab == 0) std::cout << "none." << std::endl;
+	std::cout << "Grand:" << std::endl;
+	tab = 0;
+	for (j = 0; j < i; j++) {
+		if (p[j].num < 10000) {
+			std::cout << p[j].name << "\t" << p[j].num << std::endl;
+			tab = 1;
+		}
+	}
+	if (tab == 0) std::cout << "none.";
+	delete[]p;
+	return 0;
+}
+
+6-7
+#include<iostream>
+int main()
+{
+	int v = 0, c = 0, o = 0;
+	char arr[15] = { 0 };
+	std::cout << "enter words (q to quit): ";
+	//不知从什么时候起，我的条件判断就是长长的一句，这样好像不是很好，应该以清晰易懂为主
+	while (std::cin >> arr && (arr[0] != 'q' || arr[1] != 0)) {
+		if (isalpha(arr[0])) {
+			switch (arr[0]) {
+			case 'a':
+			case 'e':
+			case 'i':
+			case 'o':
+			case 'u':++v; break;
+			default:++c;
+			}
+		}
+		else ++o;
+	}
+	std::cout << v << " words beginning with vowels" << std::endl
+		<< c << " words beginning with consonants" << std::endl
+		<< o << " others";
+	return 0;
+}
+
+6-8
+//我觉得算法对现在的我来说确实是玄学，别人用了一行就完成了求解两数最大公因数,好神奇
+//int gcd(int x,int y){return y ? gcd(y,x%y) : x;}
+//这里对我来说也是新内容，只能演示一下了
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+int main()
+{
+	std::ofstream fout;
+	std::ifstream fin;
+	fout.open("data.txt");
+	fout << "hello world!";
+	fout.close();
+	fin.open("data.txt");
+	if (!fin.is_open()) exit(EXIT_FAILURE);
+	char ch; int i = 0;
+	while (fin.get(ch)) ++i;
+	fin.close();
+	std::cout << "this file has " << i << " characters.";
+	return 0;
+}
+
+6-9
+//下面的代码有bug!!!
+//下面的代码有bug!!!
+//下面的代码有bug!!!
+//正好这段时间正在通过微软的官方文档学习vs的调试方法，就用下面这个试一下
+//以后幸运的话，我把调好的代码贴出来
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+#define SIZE 15
+typedef struct {
+	char name[SIZE];
+	double num;
+}Patron;
+int main()
+{
+	std::ifstream fin;
+	int i = 0;
+	fin.open("data.txt");
+	fin >> i;
+	Patron* p = new Patron[i];
+	if (!p) { printf("malloc failed!"); exit(EXIT_FAILURE); }
+	int j = 0;
+	while (j < i and fin.getline(p->name, SIZE) and fin >> p->num) ++j;
+	std::cout << "Grand Patrons:" << std::endl;
+	int tab = 0;
+	for (j = 0; j < i; j++) {
+		if (p[j].num > 10000) {
+			std::cout << p[j].name << "\t" << p[j].num << std::endl;
+			tab = 1;
+		}
+	}
+	if (tab == 0) std::cout << "none." << std::endl;
+	std::cout << "Grand:" << std::endl;
+	tab = 0;
+	for (j = 0; j < i; j++) {
+		if (p[j].num < 10000) {
+			std::cout << p[j].name << "\t" << p[j].num << std::endl;
+			tab = 1;
+		}
+	}
+	if (tab == 0) std::cout << "none.";
+	delete[]p;
+	fin.close();
+	return 0;
+}
