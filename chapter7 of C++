@@ -1,0 +1,430 @@
+7-1
+#include<iostream>
+inline double average(int a, int b) { return 2.0 * a * b / (a + b); }
+int main()
+{
+	int a, b;
+	double aver;
+	std::cout << "enter two numbers: ";
+	while (std::cin >> a >> b && a && b) {
+		aver = average(a, b);
+		std::cout << "average of the numbers is: " << aver << std::endl;
+		std::cout << "enter two numbers: ";
+	}
+	return 0;
+}
+
+7-2
+#include<iostream>
+double calculate(int* arr);
+int input(int* arr);
+int showarr(int* arr);
+//这里假设成绩不会为零，其实可以初始化成绩为负数
+int main()
+{
+	int arr[10]{ 0 };
+	input(arr);
+	showarr(arr);
+	std::cout << "average of scores is: " << calculate(arr);
+	return 0;
+}
+
+int input(int* arr)
+{
+	std::cout << "enter scores no more than ten: ";
+	char ch = 0; 
+	//照这样写的话，如果在输入最后一个数之后没有立即按下换行，
+	//而是一个空格再加换行，会发生有意思的事
+	for (int i = 0; ch != '\n' && std::cin >> arr[i]; i++)
+		std::cin.get(ch);
+	return 0;
+}
+int showarr(int* arr)
+{
+	int i = 0;
+	std::cout << "following are all scores:" << std::endl;
+	while (arr[i])	std::cout << arr[i++] << " ";
+	return 0;
+}
+double calculate(int* arr)
+{
+	int sum = 0; int i = 0;
+	while (arr[i]) sum += arr[i++];
+	return double(sum) / i;
+}
+
+7-3
+#include<iostream>
+struct Box {
+	char maker[40];
+	float height;
+	float width;
+	float length;
+	float volumn;
+};
+int showbox(Box box)
+{
+	std::cout << "following are box's properties:" << std::endl;
+	std::cout << "height: " << box.height << std::endl;
+	std::cout << "width: " << box.width << std::endl;
+	std::cout << "length: " << box.length << std::endl;
+	std::cout << "volumn: " << box.volumn << std::endl;
+	return 0;
+}
+int calvol(Box* box)
+{
+	box->volumn = box->height * box->width * box->length;
+	std::cout << "volumn of this cube is " << box->volumn << "." << std::endl;
+	return 0;
+}
+int main()
+{
+	Box box;
+	std::cout << "enter height,width and length of a cube: ";
+	std::cin >> box.height >> box.width >> box.length;
+	calvol(&box);
+	showbox(box);
+	return 0;
+}
+7-4
+#include<iostream>
+long double probability(int total[], int choices[]);
+int main()
+{
+	std::cout << "enter the numbers of the total choices of\n"
+		<< "this card game and the number of the picks allowed in the two rounds:\n";
+	int choices[2], total[2];
+	std::cout << "round 1 (q to quit): ";
+	while (std::cin >> total[0] >> choices[0] && total[0] >= choices[0]) {
+		std::cout << "round 2 (q to quit): ";
+		if (std::cin >> total[1] >> choices[1] && total[1] >= choices[1]) {
+			std::cout << "you have one choice in ";
+			std::cout << probability(total, choices);
+			std::cout << " of winning.\n";
+		}
+		//如果第二组输入错误可以跳出
+		else break;
+		std::cout << "round 1 (q to quit): ";
+	}
+	return 0;
+}
+long double probability(int total[], int choices[])
+{
+	long double result = 1.0;
+	long double n; int p;
+	for (n = total[0], p = choices[0]; p > 0; --p, --n) result *= n / p;
+	for (n = total[1], p = choices[1]; p > 0; --p, --n) result *= n / p;
+	return result;
+}
+
+7-5
+#include<iostream>
+//下面这段代码算是我致敬之前那个写求解最大公因数的变态
+int recursion(int i) { return i > 1 ? i * recursion(i - 1) : 1; }
+int main()
+{
+std::cout << "enter a num: ";
+int i = 0;
+std::cin >> i;
+std::cout << "recursion of this number is " << recursion(i);
+return 0;
+}
+//输入错误处理机制带我在后面找一个复杂一点的代码再实现
+7-6
+#include<iostream>
+int Fill_array(double array[], int length)
+{
+	std::cout << "enter double values: ";
+	int i = 0;
+	for (i = 0; i < length && std::cin >> array[i]; ++i);
+	return i;
+}
+
+int Show_array(double array[], int length)
+{
+	std::cout << "following are contents of this array:\n";
+	for (int i = 0; i < length; ++i) {
+		std::cout << array[i] << " ";
+	}
+	std::cout << std::endl;
+	return 0;
+}
+
+int Reverse_array(double arr[], int len)
+{
+	for (int top = 0, tail = len - 1; top < tail; ++top, --tail) {
+		double temp = arr[top]; arr[top] = arr[tail]; arr[tail] = temp;
+	}
+	return 0;
+}
+
+int main()
+{
+	const int MAX = 10;
+	int length;
+	double array[MAX];
+	length = Fill_array(array, MAX);
+	Show_array(array, length);
+	Reverse_array(array, length);
+	Show_array(array, length);
+	Reverse_array(array + 1, length - 2);
+	Show_array(array, length);
+	return 0;
+}
+
+
+7-7
+#include<iostream>
+const int MAX = 5;
+double* fill_array(double* arr, int limit);
+int show_array(double* arr, double* tail);
+void revalue(double r, double* arr, double* tail);
+
+int main()
+{
+	double properties[MAX];
+	double* tail = fill_array(properties, MAX);
+	show_array(properties, tail);
+	if (tail) {
+		std::cout << "enter revalution factor: ";
+		double factor;
+		while (!(std::cin >> factor)) {
+			std::cin.clear();
+			while (std::cin.get() != '\n') continue;
+			std::cout << "Please enter a num: ";
+		}
+		revalue(factor, properties, tail);
+		show_array(properties, tail);
+	}
+	return 0;
+}
+
+double* fill_array(double* arr, int limit)
+{
+	int i = 0;
+	for (i = 0; i < limit; ++i) {
+		std::cout << "enter value #" << i + 1 << ": ";
+		std::cin >> arr[i];
+		if (!std::cin) {
+			std::cin.clear();
+			while (std::cin.get() != '\n') continue;
+			std::cout << "bad input, input terminate!\n";
+			break;
+		}
+		if (arr[i] < 0) break;
+	}
+	return i == 0 ? NULL : arr + i;
+}
+
+int show_array(double* arr, double* tail)
+{
+	if (tail == NULL) {
+		std::cout << "array empty!";
+		return 0;
+	}
+	for (int i = 0; arr != tail; ++i) {
+		std::cout << "property #" << i + 1 << ": ";
+		std::cout << *arr++ << std::endl;
+	}
+	return 1;
+}
+
+void revalue(double r, double* arr, double* tail)
+{
+	while (tail && arr != tail) {
+		*arr++ *= r;
+	}
+}
+
+7-8
+#include<iostream>
+//全局变量不建议使用，最好是禁用。对于稍复杂一些的包含多个翻译单元的项目使用全局变量易报错
+const char* seasons[4]{ "Spring","Summer","Antumn","Winter" };
+struct Cost {
+	//c++ c11的列表初始化
+	double cost[4]{ 0 };
+};
+//第8章的函数重载了解一下，简单说就是允许函数重名，有限定条件而已
+void fill(double(*pa)[4]);
+void show(double(&da)[4]);
+void fill(Cost* pa);
+void show(Cost da);
+int main()
+{
+	double expenses[4];
+	Cost cost;
+	fill(&expenses);
+	show(expenses);
+	fill(&cost);
+	show(cost);
+	return 0;
+}
+
+//下面的函数参数更是纯属扯淡，其实只需传递个数组就可以了，我写这
+//个的时候发现自己对于指向数组的指针理解不太深，如何将其作为参数
+//传递给被调函数？奇怪的是，这个形参一定要把数组大小写出来，否则
+//main函数里fill(&expenses)调用就会出错。
+void fill(double (*pa)[4])
+{
+	for (int i = 0; i < 4; ++i) {
+		std::cout << "Enter " << seasons[i] << " expenses: ";
+		std::cin >> (*pa)[i];
+	}
+}
+//引用是下一章的内容，姑且将其当作变量的别名，先做了解
+//数组的引用和引用的数组、指针的数组和数组的指针，这两者耐人寻味。
+//引用的数组是非法的。
+//更有意思的是数组的引用的形参必须指明数组大小，不像数组做形参，可省略大小
+void show(double (&da)[4])
+{
+	double total = 0;
+	std::cout << "\nEXPENSES\n";
+	for (int i = 0; i < 4; ++i) {
+		std::cout << seasons[i] << ": $" << da[i] << std::endl;
+		total += da[i];
+	}
+	std::cout << "total expenses: $" << total << std::endl;
+}
+
+void fill(Cost* pa)
+{
+	for (int i = 0; i < 4; ++i) {
+		std::cout << "Enter " << seasons[i] << " expenses: ";
+		std::cin >> pa->cost[i];
+	}
+}
+
+void show(Cost da)
+{
+	double total = 0;
+	std::cout << "\nEXPENSES\n";
+	for (int i = 0; i < 4; ++i) {
+		std::cout << seasons[i] << ": $" << da.cost[i] << std::endl;
+		total += da.cost[i];
+	}
+	std::cout << "total expenses: $" << total << std::endl;
+}
+
+7-9
+//这些代码快写吐了，于是决定就今天开始刷leetcode。然后尝试一下看开源项目
+//现在是大二上期末，还剩两门课没有考。三天后就解放了，欧耶!!!不过现在貌似有些晚了
+//都大二上结束了，我到现在还只是会这些基础语言，和数据结构。理想中的自己应该是大//一就自学完2-3门语言、数据结构，并且掌握一些基础的计算机网络知识。理想啊~
+//前几天还在跟我做项目的导师吹牛说这个寒假要准备acm，结果一看报名费和参赛规模，
+//我就知道这事黄了···所以说牛皮不能瞎吹，啪啪打脸是很可怕的。
+//我统计了一下这个寒假要做的事：
+//1、leetcode(这个会一直做下去，可能到时会写写博客，总结算法什么的)
+//2、java和python（项目需要，没办法。python大一的时候没学完，现在全忘了，很气）
+//3、hadoop大数据（项目需要，本人对大数据没有任何好感）
+//4、离散数学、计算机网络（离散数学自己作，这学期没学完。计算机网络再不学就没时间
+//哇塞，这个寒假能完成这些任务我吃翔。哦对，我不是计算系的学生，但要自学转计算机。
+//我在学校的跨市分校区，所以这边没有acm校队。
+//这个c和c++两本数的答案我最近想过放弃更新的，付出的时间与收益不等。可是想到自//己决定做什么结果都半途而废的话，可能更会讨厌自己吧。
+//天啊我废话好多，可能缺少交流，就在这没人看到的地方多说了一些？
+#include<iostream>
+const int SLEN = 30;
+struct student {
+	char fullname[SLEN];
+	char hobby[SLEN];
+	int ooplevel;
+};
+
+int getinfo(student pa[], int n);
+void display1(student st);
+void display2(const student* ps);
+void display3(const student pa[], int n);
+
+int main()
+{
+	std::cout << "Enter class size: ";
+	int class_size;
+	std::cin >> class_size;
+	while (std::cin.get() != '\n') continue;
+	student* ptr_stu = new student[class_size];
+	int entered = getinfo(ptr_stu, class_size);
+	for (int i = 0; i < entered; ++i) {
+		display1(ptr_stu[i]);
+		display2(&ptr_stu[i]);
+	}
+	display3(ptr_stu, entered);
+	delete[] ptr_stu;
+	std::cout << "Done\n";
+	return 0;
+}
+//下面这个函数有问题，是错误的。书上说的student name遇到换行符结束输入着实没有看懂什么意思。
+int getinfo(student pa[], int n)
+{
+	int len = 0;	//数组实际数据量
+	while (len++ < n) {
+		std::cout << "fullname #" << len + 1 << ": ";
+		//我觉得换行符这东西立马清理掉最好。即使对后面的程序没有影响
+		//还记得getline和get的区别吗？
+		std::cin.get(pa[len].fullname, SLEN).get();
+		std::cout << "hobby #" << len + 1 << ": ";
+		std::cin.getline(pa[len].hobby, SLEN).get();
+		std::cout << "ooplevel #" << len + 1 << ": ";
+		std::cin >> pa[len].ooplevel;
+	} 
+	return len;
+}
+void display1(student st)
+{
+	std::cout << "fullneame: " << st.fullname << std::endl;
+	std::cout << "hobby: " << st.hobby << std::endl;
+	std::cout << "ooplevel: " << st.ooplevel << std::endl;
+}
+void display2(const student* ps)
+{
+	std::cout << "fullname: " << ps->fullname << std::endl;
+	std::cout << "hobby: " << ps->hobby << std::endl;
+	std::cout << "ooplevel: " << ps->ooplevel << std::endl;
+}
+
+void display3(const student pa[], int n)
+{
+	for (int i = 0; i < n; ++i) {
+		std::cout << "fullname #" << i + 1 << ": " << pa[i].fullname << std::endl;
+		std::cout << "hobby #" << i + 1 << ": " << pa[i].hobby << std::endl;
+		std::cout << "ooplevel #" << i + 1 << ": " << pa[i].ooplevel << std::endl;
+	}
+}
+
+
+
+7-10
+#include<iostream>
+double add(double, double);
+double sub(double, double);
+double mul(double, double);
+double calculate(double, double, double (*pa)(double, double));
+//函数指针这个需要重视
+//从这里开始慢慢地有了类设计的感觉(类的使用刚看完）
+struct Num {
+	const char* fconname[3];
+	double (*pa[3])(double, double);
+	double eval[3];
+};
+
+
+int main()
+{
+	Num num = { { "sum", "difference", "product" } , { add, sub, mul } };
+	std::cout << "enter a pair of double numbers(q to quit): ";
+	double a, b;
+	for (int i = 0; std::cin >> a && std::cin >> b; ++i) {
+		int j = 0;
+		while (j < 3) {
+			num.eval[j] = calculate(a, b, num.pa[j]);
+			std::cout << "the " << num.fconname[j] << " of two numbers is "
+				<< num.eval[j] << std::endl;
+			j++;
+		}
+		std::cout << "enter a pair of double numbers(q to quit): ";
+	}
+	std::cout << "Done.";
+	return 0;
+}
+//较为间段且调用次数较多的可以作为内联函数使用，提升效率。详见第8章
+double add(double a, double b) { return a + b; }
+double sub(double a, double b) { return a - b; }
+double mul(double a, double b) { return a * b; }
+double calculate(double a, double b, double (*pa)(double, double)) { return (*pa)(a, b); }
