@@ -1,0 +1,241 @@
+8-1
+//一个全局变量记录次数就解决了
+#include<iostream>
+const int LEN = 20;
+int times = 0;
+void printstr(char str[], int n = 0);
+int main()
+{
+	char string[LEN]{ "i love China!" };
+	printstr(string);
+	printstr(string, -5);
+	printstr(string, 5);
+	return 0;
+}
+void printstr(char str[], int n)
+{
+	++times;
+	if (!n)
+		std::cout << str;//没有换行
+	else
+		for (int i = 0; i < times; ++i)
+			std::cout << str << std::endl;
+}
+
+8-2
+#include<iostream>
+#include<cstring>
+struct CandyBar {
+	char brand[30];
+	double weight;
+	int calorie;
+};
+//vs默认字符串字面量为const char*
+void Init(CandyBar& candybar, const char* str = "Millennium Munch", double weight = 2.85, int calorie = 350);
+void Show(const CandyBar& candybar);
+int main()
+{
+	CandyBar candybar;
+	Init(candybar, "professor is called beast", 2.95, 350);
+	Show(candybar);
+	std::cout << "Done.";
+	return 0;
+}
+void Init(CandyBar& candybar, const char* str, double weight, int calorie)
+{
+	strcpy_s(candybar.brand, str);
+	candybar.weight = weight;
+	candybar.calorie = calorie;
+}
+void Show(const CandyBar& candybar)
+{
+	std::cout << "brand: " << candybar.brand << std::endl;
+	std::cout << "weight: " << candybar.weight << std::endl;
+	std::cout << "calorie: " << candybar.calorie << std::endl;
+}
+
+8-3
+#include<iostream>
+#include<string>
+//很诡异的是即使不包含cctype，toupper也可以用（vs2019)
+#include<cctype>
+std::string& Toupper(std::string& str);
+int main()
+{
+	std::string str;
+	std::cout << "Enter a string (q to quit): ";
+	getline(std::cin, str);
+	while (str != "q") {
+		Toupper(str);
+		std::cout << str << std::endl;
+		std::cout << "Next string (q to quit): ";
+		getline(std::cin, str);
+	}
+	std::cout << "Bye!";
+	return 0;
+}
+//这个函数有好多玩火的地方，也可能是我太菜了
+std::string& Toupper(std::string& str)
+{
+	//将string类转化为字符数组，两个方法
+	char* pa = new char[str.size() + 1];
+	int len = str.copy(pa, str.size());
+	pa[len] = '\0';
+	//法2:
+	//char arr[size];
+	//strcpy(arr, str.c_str());
+	int i = 0;
+	while (pa[i] != '\0') {
+		pa[i] = toupper(pa[i]);
+		++i;
+	}
+	str = pa;
+	delete[] pa;
+	return str;
+}
+
+8-4
+#include<iostream>
+#include<string.h>
+struct stringy {
+	char* str;
+	int ct;
+};
+void Set(stringy& str, const char* arr);
+void Show(const stringy& str, int times = 1);
+void Show(const char* arr, int times = 1);
+int main()
+{
+	stringy beany;
+	char testing[] = "Reality isn't what it used to be.";
+	Set(beany, testing);
+	Show(beany);
+	Show(beany, 2);
+	testing[0] = 'D';
+	testing[1] = 'u';
+	Show(testing);
+	Show(testing, 3);
+	Show("Done!");
+	return 0;
+}
+void Set(stringy& str, const char* arr)
+{
+	str.ct = strlen(arr);
+	char* pa = new char[str.ct + 1];
+	strcpy_s(pa, str.ct + 1, arr);
+	str.str = pa;
+}
+//下面这两个函数可以使用模板配合默认参数
+void Show(const stringy& str, int times)
+{
+	for (int i = 0; i < times; ++i) {
+		std::cout << str.str << std::endl;
+	}
+}
+void Show(const char* arr, int times)
+{
+	for (int i = 0; i < times; ++i) {
+		std::cout << arr << std::endl;
+	}
+}
+8-5
+#include<iostream>
+template <typename T>T Max5(T arr[5]);
+int main()
+{
+	int n_arr[5]{ 4,5,2,3,1 };
+	double l_arr[5]{ 1.1,3.3,2.2,5.5,4.4 };
+	std::cout << "Max number of int arr: " << Max5(n_arr) << std::endl;
+	std::cout << "Max number of double arr: " << Max5(l_arr) << std::endl;
+	std::cout << "int arr: ";
+	for (int i = 0; i < 5; i++) std::cout << n_arr[i] << " ";
+	std::cout << std::endl << "double arr: ";
+	for (int i = 0; i < 5; i++) std::cout << l_arr[i] << " ";
+	return 0;
+}
+template <typename T>T Max5(T arr[5])
+{
+	int i, j, k;
+	T temp;
+	//借此用一下排序，不用就生疏了
+	for (i = 0; i < 4; ++i) {
+		k = i;
+		for (j = i + 1; j < 5; ++j)
+			if (arr[k] < arr[j]) k = j;
+		temp = arr[i]; arr[i] = arr[k]; arr[k] = temp;
+	}
+	return arr[0];
+}
+
+8-6
+#include<iostream>
+#include<cstring>
+template<typename T> T Maxn(T arr[], int n);
+template<>const char* Maxn<const char*>(const char* arr[], int n);
+int main()
+{
+	int n_arr[6]{ 3,5,6,2,4,1 };
+	double l_arr[4]{ 4.4,2.2,1.1,3.3 };
+	const char* c_arr[5]{ "i", "am","a","lucky","dog" };
+	std::cout << "max num of int arr: "<< Maxn(n_arr, 6) << std::endl;
+	std::cout << "max num of double arr: " << Maxn(l_arr, 4) << std::endl;
+	std::cout << "the most long str: " << Maxn(c_arr, 5);
+	return 0;
+}
+template<typename T> T Maxn(T arr[], int n)
+{
+	int i, k = 0;
+	T temp;
+	for (i = 1, temp = arr[k]; i < n; ++i)
+		if (arr[i] > arr[k]) k = i;
+	return arr[k];
+}
+//在第二个<>里为什么是const char*,我还有点迷
+template<>const char* Maxn<const char*>(const char* arr[], int n)
+{
+	int i, k = 0, temp;
+	int* pa = new int[n]; //储存字符串长度
+	for (i = 0; i < n; ++i) pa[i] = strlen(arr[i]);
+	for (i = 1, temp = pa[k]; i < n; ++i)
+		if (pa[i] > pa[k]) k = i;
+	return arr[k];
+}
+
+8-7
+#include<iostream>
+template<typename T>T SumArray(T arr[], int n);
+template<typename T>T SumArray(T* arr[], int n);
+
+struct debts {
+	char name[50];
+	double amount;
+};
+int main()
+{
+	int things[6]{ 13,31,103,301,310,130 };
+	struct debts mr_E[3] {
+		{"Ima Wolfe", 2400.0},
+		{"Ura Foxe", 1300.0},
+		{"Iby Stout", 1800.0},
+	};
+	double* pd[3];
+	for (int i = 0; i < 3; ++i) pd[i] = &mr_E[i].amount;
+	std::cout << "sum of arr things: " << SumArray(things, 6) << std::endl;
+	std::cout << "sum of debts: " << SumArray(pd, 3) << std::endl;
+	std::cout << "Done.";
+	return 0;
+}
+template<typename T>T SumArray(T arr[], int n)
+{
+	T sum{ 0 };
+	for (int i = 0; i < n; ++i) sum += arr[i];
+	return sum;
+}
+
+template<typename T>T SumArray(T* arr[], int n)
+{
+	//这里推荐使用c++11的初始化方法
+	T sum{ 0 };
+	for (int i = 0; i < n; ++i) sum += *arr[i];
+	return sum;
+}
