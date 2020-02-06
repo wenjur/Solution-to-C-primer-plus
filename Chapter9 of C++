@@ -1,0 +1,221 @@
+9-1
+//=========================================
+//“golf.h”
+//=========================================
+//用一遍就会了
+#ifndef SIGNAL
+#define SIGNAL
+
+#include<iostream>
+const int LEN = 40;
+struct Golf {
+	char fullname[LEN];
+	int handicap;
+};
+
+//在这个位置可以加上对应的函数说明
+void SetGolf(Golf& g, const char* name, int hc);
+//输入的fullname中可以有空格，换行或空行结束输入。输入别少于
+//3组，mian里测试函数时默认至少3组数据
+int SetGolf(Golf& g);
+void HandiCap(Golf& g, int hc);
+void ShowGolf(const Golf& g);
+
+#endif
+//==========================================
+//”golf.cpp”
+//==========================================
+#include"golf.h"
+void SetGolf(Golf& g, const char* name, int hc)
+{
+	strcpy_s(g.fullname, LEN, name);
+	g.handicap = hc;
+}
+int SetGolf(Golf& g)
+{
+	std::cout << "enter the name: ";
+	while (!std::cin.get(g.fullname, LEN)) {
+		std::cin.clear();
+		while (std::cin.get() != '\n') continue;
+		g.fullname[0] = '\0';
+		return 0;
+	}
+	std::cout << "enter the handicap: ";
+	(std::cin >> g.handicap).get();
+	return 1;
+}
+void HandiCap(Golf& g, int hc) { g.handicap = hc; }
+void ShowGolf(const Golf& g)
+{
+	std::cout << "fullname: " << g.fullname << std::endl;
+	std::cout << "handicap: " << g.handicap << std::endl;
+}
+//==========================================
+//“main.cpp”
+//==========================================
+#include"golf.h"
+int main()
+{
+	Golf golf[5];
+	int times = 0; //储存SetGolf调用后输入的实际数据项个数
+	std::cout << "======INPUT:======" << std::endl;
+	std::cout << "enter the fullname and handicap: " << std::endl;
+	for (int i = 0, j = 0; i < 5 && (j = SetGolf(golf[i])); i++) times += j;
+	std::cout << "======OUTPUT:======" << std::endl;
+	for (int i = 0; i < times; i++) ShowGolf(golf[i]);
+	std::cout << "======MODIFY #1:======" << std::endl;
+	HandiCap(golf[1], 5);
+	for (int i = 0; i < times; i++) ShowGolf(golf[i]);
+	std::cout << "======MODIFY #2:======" << std::endl;
+	SetGolf(golf[2], "wen ju", 6);
+	for (int i = 0; i < times; i++) ShowGolf(golf[i]);
+	return 0;
+}
+9-2
+#include<iostream>
+#include<string>
+const int ARSIZE = 10;
+void StrCount(const std::string str);
+int main()
+{
+	std::string input;
+	std::cout << "enter a line: ";
+	getline(std::cin, input);
+	while (input != "") {
+		StrCount(input);
+		std::cout << "enter the next line (empty line to quit): ";
+		getline(std::cin, input);
+	}
+	std::cout << "Done.";
+	return 0;
+}
+void StrCount(const std::string str)
+{
+	static int total = 0;
+	int count = 0;
+	count = str.size();
+	total += count;
+	std::cout << "\"" << str << "\" contains " << count << " characters\n";
+	std::cout << total << " characters total\n";
+}
+
+9-3
+#include<iostream>
+#include<new>
+
+struct Chaff {
+	char dross[20];
+	int slag;
+};
+int main()
+{
+	int arr[50];
+	Chaff* pa = new(arr) Chaff[2];
+	for (int i = 0; i < 2; i++) {
+		strcpy_s(pa[i].dross, 20, "semir");
+		pa[i].slag = 2;
+	}
+	for (int i = 0; i < 2; i++) {
+		std::cout << "dross: " << pa[i].dross << std::endl;
+		std::cout << "slag: " << pa[i].slag << std::endl;
+	}
+	return 0;
+}
+
+9-4
+//===================
+//“Header.h”
+//===================
+#ifndef SIGNAL
+#define SIGNAL
+#include<iostream>
+namespace SALES
+{
+	const int QUARTERS = 4;
+	struct Sales {
+		double sales[QUARTERS];
+		double average;
+		double max;
+		double min;
+	};
+	void SetSales(Sales& s, const double ar[], int n);
+	void SetSales(Sales& s);
+	void ShowSales(const Sales& s);
+}
+#endif
+//====================
+//”source.cpp”
+//====================
+#include"Header.h"
+namespace SALES
+{
+	void SetSales(Sales& s, const double ar[], int n) 
+	{
+		double total = 0; int i = 0;
+		if (n < 4) {
+			for (i = 0; i < n; ++i) {
+				s.sales[i] = ar[i]; total += ar[i];
+			}
+			for (int j = n; j < QUARTERS; j++) s.sales[j] = 0;
+			s.average = total / n;
+			for (i = 1, s.max = s.min = ar[0]; i < n; i++) {
+				s.max = s.max > ar[i] ? s.max : ar[i];
+				s.min = s.min < ar[i] ? s.min : ar[i];
+			}
+		}
+		else {
+			for (i = 0; i < 4; i++) {
+				s.sales[i] = ar[i]; total += ar[i];
+			}
+			s.average = total / 4;
+			for (i = 1, s.max = s.min = ar[0]; i < QUARTERS; i++) {
+				s.max = s.max > ar[i] ? s.max : ar[i];
+				s.min = s.min < ar[i] ? s.min : ar[i];
+			}
+		}
+	}
+	void SetSales(Sales& s)
+	{
+		int i = 0; double total = 0; int j = 0;
+		std::cout << "enter sales for 4 or lesser quarters (q to terminate input):\n";
+		for (i = 0; i < QUARTERS; i++) {
+			std::cout << "QUARTERS #" << i + 1 << ": ";
+			if (!(std::cin >> s.sales[i])) {
+				std::cin.clear();
+				while (std::cin.get() != '\n') continue;
+				break;
+			}
+			total += s.sales[i];
+		}
+		for (int j = i; j < QUARTERS; j++) s.sales[j] = 0;
+		s.average = total / i;
+		for (j = 1, s.max = s.min = s.sales[0]; j < QUARTERS; j++) {
+			s.max = s.max > s.sales[j] ? s.max : s.sales[j];
+			s.min = s.min < s.sales[j] ? s.min : s.sales[j];
+		}
+	}
+	void ShowSales(const Sales& s)
+	{
+		std::cout << "sales of 4 quarters: ";
+		for (int i = 0; i < QUARTERS; i++) std::cout << s.sales[i] << " ";
+		std::cout << std::endl << "average value of sales: " << s.average << std::endl;
+		std::cout << "maximum and minimum values of sales: " << s.max << " " << s.min;
+		std::cout << std::endl;
+	}
+}
+//=====================
+//”main.cpp”
+//=====================
+#include"Header.h"
+int main()
+{
+	double arr[4]{ 233,244,255,266 };
+	SALES::Sales sales;
+	SALES::SetSales(sales, arr, 4);
+	SALES::ShowSales(sales);
+	SALES::SetSales(sales);
+	SALES::ShowSales(sales);
+	std::cout << "Done.";
+	return 0;
+}
+//以后就正式进入类了
