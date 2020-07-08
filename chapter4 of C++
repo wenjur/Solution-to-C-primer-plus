@@ -69,7 +69,6 @@ int main()
 #include<string>
 int main()
 {
-	//我为什么不给string类变量赋初值？本渣渣忘记string类的初始化规则了。
 	std::cout << "enter your first name: ";
 	std::string fname;
 	std::cin >> fname;
@@ -79,8 +78,6 @@ int main()
 	fname = fname + "," + lname;
 	std::cout << "here's the information in a single string: "
 		<< fname;
-	/*本渣渣又来复习啦，奇怪的是这玩意不是包含在stdlib中吗，怎么没有它也可以用？
-	我特么是见鬼了不成，刚刚上网搜的也是定义在stdlib中，可这就是能用？*/
 	return EXIT_SUCCESS;
 }
 
@@ -88,12 +85,11 @@ int main()
 #include<iostream>
 int main()
 {
-	//个人变量命名风格也是蛮重要的，我就姑且按自己的来了
+	//javad的命名风格可以借鉴
 	struct candyBar
 	{
 		char brand[20];
 		double weight;
-		//有道真是个好东西，看我英语多棒！
 		int calorie;
 	}snack =
 	{
@@ -101,7 +97,6 @@ int main()
 		2.3,
 		350
 	};
-	//懒是程序员的信仰
 	std::cout << snack.brand
 		<< snack.weight
 		<< snack.calorie;
@@ -118,14 +113,12 @@ int main()
 		double weight;
 		int calorie;
 	}snack[5] = {};
-	//提前混个脸熟哈，来，打个招呼
 	for (int i = 0; i < 5; i++)
 	{
-		/*这段代码第二个输出是错的，单纯想复习，温故而知新，可不秃头矣
+		/*这段代码第二个输出是错的，单纯想复习
 		句点运算符的优先级比解引用要高
-		很有意思的是这个地方只打印了15个零，照理来说应该是20个，叛徒，
-		绝对有叛徒.本渣渣灵机一动(绞尽脑汁),使用snack[i].brand时将
-		char字符数组处理为字符串输出，即空字符，就什么都没有*/
+		很有意思的是这个地方只打印了15个零，照理来说应该是20个
+		使用snack[i].brand时将char字符数组处理为字符串输出，即空字符，就什么都没有*/
 		std::cout << snack[i].brand
 			<< snack->weight
 			<< (*(snack + i)).weight
@@ -151,17 +144,15 @@ int main()
 	{
 		std::cout << "enter the company of the pizza #"
 			<< i + 1 << ": ";
-		//再此再给自己强调一遍，getline(cin,str)是string类io,再忘了牙给你打肚子里去
+		//再此再给自己强调一遍，getline(cin,str)是string类io
 		getline(std::cin, (pizza+i) -> name);
 		std::cout << "then enter the pizza diameter: ";
 		std::cin >> (*(pizza+i)).diameter;
 		std::cout << "at last enter the pizza weight: ";
 		std::cin >> pizza[i].weight;
-		//如果不加上下面这句的话，you can give it a try!
 		std::cin.get();
 	}
-//奉行能水就水原则昧着良心敲代码
-for (int i = 0; i < SIZE; i++)
+	for (int i = 0; i < SIZE; i++)
 		std::cout << pizza[i].name
 		<< pizza[i].diameter
 		<< pizza[i].weight
@@ -187,8 +178,8 @@ int main()
 	{
 		std::cout << "then enter the pizza diameter: ";
 		std::cin >> (*(pt + i)).diameter;
-std::cin.get();
-std::cout << "enter the company of the pizza #"
+		std::cin.get();
+		std::cout << "enter the company of the pizza #"
 			<< i + 1 << ": ";
 		getline(std::cin, (pt + i)->name);
 
