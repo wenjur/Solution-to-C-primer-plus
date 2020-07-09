@@ -74,7 +74,6 @@ int main()
 	std::cout << "Bye!";
 	return 0;
 }
-//这个函数有好多玩火的地方，也可能是我太菜了
 std::string& Toupper(std::string& str)
 {
 	//将string类转化为字符数组，两个方法
@@ -125,7 +124,6 @@ void Set(stringy& str, const char* arr)
 	strcpy_s(pa, str.ct + 1, arr);
 	str.str = pa;
 }
-//下面这两个函数可以使用模板配合默认参数
 void Show(const stringy& str, int times)
 {
 	for (int i = 0; i < times; ++i) {
