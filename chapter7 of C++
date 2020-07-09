@@ -119,7 +119,6 @@ long double probability(int total[], int choices[])
 
 7-5
 #include<iostream>
-//下面这段代码算是我致敬之前那个写求解最大公因数的变态
 int recursion(int i) { return i > 1 ? i * recursion(i - 1) : 1; }
 int main()
 {
@@ -129,7 +128,6 @@ std::cin >> i;
 std::cout << "recursion of this number is " << recursion(i);
 return 0;
 }
-//输入错误处理机制带我在后面找一个复杂一点的代码再实现
 7-6
 #include<iostream>
 int Fill_array(double array[], int length)
@@ -244,7 +242,7 @@ struct Cost {
 	//c++ c11的列表初始化
 	double cost[4]{ 0 };
 };
-//第8章的函数重载了解一下，简单说就是允许函数重名，有限定条件而已
+//第8章的函数重载了解一下，简单说就是允许函数重名
 void fill(double(*pa)[4]);
 void show(double(&da)[4]);
 void fill(Cost* pa);
@@ -260,10 +258,8 @@ int main()
 	return 0;
 }
 
-//下面的函数参数更是纯属扯淡，其实只需传递个数组就可以了，我写这
-//个的时候发现自己对于指向数组的指针理解不太深，如何将其作为参数
-//传递给被调函数？奇怪的是，这个形参一定要把数组大小写出来，否则
-//main函数里fill(&expenses)调用就会出错。
+//下面的函数参数其实只需传递个数组就可以了，试一下将指向数组的指针作为参数
+//传递给被调函数。奇怪的是，这个形参一定要把数组大小写出来，否则main函数里fill(&expenses)调用就会出错。
 void fill(double (*pa)[4])
 {
 	for (int i = 0; i < 4; ++i) {
@@ -306,20 +302,6 @@ void show(Cost da)
 }
 
 7-9
-//这些代码快写吐了，于是决定就今天开始刷leetcode。然后尝试一下看开源项目
-//现在是大二上期末，还剩两门课没有考。三天后就解放了，欧耶!!!不过现在貌似有些晚了
-//都大二上结束了，我到现在还只是会这些基础语言，和数据结构。理想中的自己应该是大//一就自学完2-3门语言、数据结构，并且掌握一些基础的计算机网络知识。理想啊~
-//前几天还在跟我做项目的导师吹牛说这个寒假要准备acm，结果一看报名费和参赛规模，
-//我就知道这事黄了···所以说牛皮不能瞎吹，啪啪打脸是很可怕的。
-//我统计了一下这个寒假要做的事：
-//1、leetcode(这个会一直做下去，可能到时会写写博客，总结算法什么的)
-//2、java和python（项目需要，没办法。python大一的时候没学完，现在全忘了，很气）
-//3、hadoop大数据（项目需要，本人对大数据没有任何好感）
-//4、离散数学、计算机网络（离散数学自己作，这学期没学完。计算机网络再不学就没时间
-//哇塞，这个寒假能完成这些任务我吃翔。哦对，我不是计算系的学生，但要自学转计算机。
-//我在学校的跨市分校区，所以这边没有acm校队。
-//这个c和c++两本数的答案我最近想过放弃更新的，付出的时间与收益不等。可是想到自//己决定做什么结果都半途而废的话，可能更会讨厌自己吧。
-//天啊我废话好多，可能缺少交流，就在这没人看到的地方多说了一些？
 #include<iostream>
 const int SLEN = 30;
 struct student {
@@ -356,8 +338,6 @@ int getinfo(student pa[], int n)
 	int len = 0;	//数组实际数据量
 	while (len++ < n) {
 		std::cout << "fullname #" << len + 1 << ": ";
-		//我觉得换行符这东西立马清理掉最好。即使对后面的程序没有影响
-		//还记得getline和get的区别吗？
 		std::cin.get(pa[len].fullname, SLEN).get();
 		std::cout << "hobby #" << len + 1 << ": ";
 		std::cin.getline(pa[len].hobby, SLEN).get();
@@ -396,8 +376,6 @@ double add(double, double);
 double sub(double, double);
 double mul(double, double);
 double calculate(double, double, double (*pa)(double, double));
-//函数指针这个需要重视
-//从这里开始慢慢地有了类设计的感觉(类的使用刚看完）
 struct Num {
 	const char* fconname[3];
 	double (*pa[3])(double, double);
@@ -423,7 +401,7 @@ int main()
 	std::cout << "Done.";
 	return 0;
 }
-//较为间段且调用次数较多的可以作为内联函数使用，提升效率。详见第8章
+//较为简短且调用次数较多的可以作为内联函数使用，提升效率。详见第8章
 double add(double a, double b) { return a + b; }
 double sub(double a, double b) { return a - b; }
 double mul(double a, double b) { return a * b; }
