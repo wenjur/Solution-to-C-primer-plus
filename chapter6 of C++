@@ -13,15 +13,13 @@ int main()
 			if (islower(ch)) ch=toupper(ch);
 			else ch=tolower(ch);
 		}
-		//眼睛看来是近视的不行啊，书上明摆着写的alnum是数字或字母，我还用
 		if (isdigit(ch)) continue;
 		std::cout << ch;
 		i++;
 	}
-	//在此啰嗦一句，cin.get(ch)版本会吃掉换行，并且把它赋给ch,还可以打印输出
+	//cin.get(ch)版本会吃掉换行，并且把它赋给ch,还可以打印输出
 	std::cout << "Done.";
 	return 0;
-	//头疼，输入的字符不回显，我还找不到问题在哪里，快00：30了，睡觉!!!
 }
 
 6-2
@@ -63,8 +61,6 @@ int main()
 		<< "t) tree\t\tg) game" << std::endl;
 	char ch;
 	std::cout << "please enter a c,p,t,or g: ";
-
-	//这两行代码准确来说不是一个好主意
 	while (!(std::cin >> ch) || (ch != 'c' && ch != 'p' && ch != 't' && ch != 'g')) {
 		std::cout << "please enter a c,p,t,or g: ";
 	}
@@ -77,16 +73,12 @@ int main()
 	return 0;
 }
 6-4
-//我实在是没有看明白这题要我怎么输出（其实是懒）
+//我实在是没有看明白这题要我怎么输出
 
 6-5
 #include<iostream>
 int main()
 {
-	//感觉自己脑袋是不是进水了，简单的一个if else让我给写这么复杂
-	//这要是别人第一眼看下去估计大概率上是不知道我在干什么
-	//不过这里牵扯到一个数学问题，记得以前数学课有计算这种类似的题的其它方法
-	//所以这里就想着把这个算法给实现出来
 	std::cout << "enter your salary: ";
 	int salary = 0;
 	double tax = 0;
@@ -108,7 +100,6 @@ int main()
 
 6-6
 #include<iostream>
-//如果不是特别的需要方便的话，一般我选择使用数组，更快
 typedef struct {
 	char name[10];
 	double num;
@@ -119,16 +110,11 @@ int main()
 	int i = 0;
 	std::cin >> i;
 	Patron* p = new Patron[i];
-	//为了方便(懒)起见，名字不包含空格，就是一个单词
 	int j = 0;
 	while (j < i) {
 		std::cout << "enter the donor'name and his donation: ";
-		//这里又说我非法写入了heap buffer之后的内存，奇怪了，这哪儿错了？
-		//首先可以排除cin的拼接问题，因为只有第一组在输出时错误，说明可能是
-		//第一组在输入时就有了问题。可是奇怪的是后面的都是正常的。
-		//已知将j++移到外面或不使用cin拼接(j++仍在里面)二者都不会带来错误
-		//又快到00:30了，还真是有缘啊，睡觉去
-		std::cin >> (p + j)->name >> (p + j++)->num;
+		std::cin >> (p + j)->name >> (p + j)->num;
+		j++;
 	}
 	std::cout << "Grand Patrons:" << std::endl;
 	int tab = 0;	//标记某种类别是否为none
@@ -159,7 +145,6 @@ int main()
 	int v = 0, c = 0, o = 0;
 	char arr[15] = { 0 };
 	std::cout << "enter words (q to quit): ";
-	//不知从什么时候起，我的条件判断就是长长的一句，这样好像不是很好，应该以清晰易懂为主
 	while (std::cin >> arr && (arr[0] != 'q' || arr[1] != 0)) {
 		if (isalpha(arr[0])) {
 			switch (arr[0]) {
@@ -180,9 +165,8 @@ int main()
 }
 
 6-8
-//我觉得算法对现在的我来说确实是玄学，别人用了一行就完成了求解两数最大公因数,好神奇
+//一行求解两数最大公因数,好神奇
 //int gcd(int x,int y){return y ? gcd(y,x%y) : x;}
-//这里对我来说也是新内容，只能演示一下了
 #include<iostream>
 #include<fstream>
 #include<cstdlib>
@@ -204,10 +188,6 @@ int main()
 
 6-9
 //下面的代码有bug!!!
-//下面的代码有bug!!!
-//下面的代码有bug!!!
-//正好这段时间正在通过微软的官方文档学习vs的调试方法，就用下面这个试一下
-//以后幸运的话，我把调好的代码贴出来
 #include<iostream>
 #include<fstream>
 #include<cstdlib>
