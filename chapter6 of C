@@ -17,8 +17,7 @@ int main()
 }
 
 6-2
-/*这道题没按书上要求写，想换个方法，而且书上那算法不简洁，不符合
-我对代码的审美要求*/
+//这道题没按书上要求写，想换个方法
 #include<stdio.h>
 int main()
 {
@@ -50,11 +49,6 @@ int main()
 #include<stdio.h>
 int main()
 {
-	/*这段函数用了四个变量，其实应该可以只使用两个的，也有其他方法
-	即使我上学期学过了c,现在在写循环语句时也要在入口和出口条件上花
-	不少时间去检验正确性，总之循环语句比较麻烦的也就是这个条件判断
-	了，还有就是逻辑上的架构，如何把逻辑理清也是很麻烦，对于我这个
-	逻辑菜鸟简直是噩梦*/
 	int i = 0;
 	char j = 0;
 	int k = 0;	//借助k确定每一行的初始值
@@ -71,17 +65,12 @@ int main()
 #include<stdio.h>
 int main()
 {
-	//为什么要定义时初始化值，这是一个良好的习惯
 	int i = 0;
 	char j = 0;
 	char a = 0;
 	printf("Enter a capital,then I wil output a pyramid:");
 	scanf_s("%c", &a, sizeof(a));
-	//千万别觉得for里又给i赋值重复啰嗦，书上也强调了初始化入口的重要性
 	for (i = 0; i < 5; i++){
-		/*32是空格ASCII值，初学的话这个用法也是可以参考一下的
-		考虑到移植问题，键盘敲个空格就行，我是为了强迫自己去记
-		忆ASCII值*/
 		for (j = 0; j < 4 - i; j++)
 			putchar(32);
 		//顺序输出,(i+1)是控制出口条件
@@ -109,7 +98,6 @@ int main()
 }
 
 6-7
-//从这里开始我更改一下写循环的风格
 #include<stdio.h>
 #include<string.h>
 int main()
@@ -131,8 +119,7 @@ int main()
 	printf("enter two float numbers: ");
 	while (scanf_s("%lf %lf", &a, &b) == 2) {
 		if (a < b) {
-			//vs2019,文件.c后缀,并不记得c语言可以在
-			//非开头出定义变量，可能语句块是个例外吧
+			//vs2019,文件.c后缀,并不记得c语言可以在非开头处定义变量，这里仍然运行正确
 			double temp; temp = a; a = b; b = temp;
 		}
 		printf("result: %.2f\n", (a - b) / (a * b));
@@ -158,8 +145,7 @@ int main()
 	}
 	return 0;
 }
-//像这种执行时间和调用消耗时间差不多的，可以使用内联函数
-//内联是c++的特性，c也可以用，主要是看编译器是否支持
+
 double compute(double a, double b){
 	return (a - b) / (a * b);
 }
@@ -183,14 +169,13 @@ int main()
 
 6-11
 #include<stdio.h>
-//这里好像还没学define指令，那先混个脸熟吧
 #define SIZE 8
 int main()
 {
 	int i = 0;
 	int j = 0;
 	int arr[SIZE];
-	//下面演示一种处理数据流的方法，一般数据流会有一个结尾标识符，这里用非数值char来表示
+	//数据流会有一个结尾标识符，这里用非数值char来表示
 	//也可以通过键盘按下ctrl+z后再按下enter来模拟结尾标识
 	//没有按照书上的来写，我是顺序输出的，方便演示
 	printf("enter 8 numbers with a char end: ");
@@ -230,11 +215,8 @@ int main()
 {
 	int i = 0;
 	int arr[SIZE];
-	//我服了，之前一直用的vc++6.0，用pow函数没事，现在vs警告就来了
-	//其原型是double pow(double,double),因此double赋给int类型arr[i]就警告
-	//在此错误就不改了，留着看。再有就是这个i++的使用是个错误范例
-	//虽然运行无误，但是在两边都有i的情况下使用i++是不合适的
-	for (i = 0; i < SIZE; arr[i++] = pow(2, i));
+	//原型是double pow(double,double),因此double赋给int类型arr[i]就警告
+	for (i = 0; i < SIZE; arr[i++] = (int)pow(2, i));
 	i = 0;
 	do { printf("%d ", arr[i]); } while (i++ < SIZE - 1);
 	return EXIT_SUCCESS;
@@ -266,15 +248,12 @@ int main()
 #define SIZE 256
 int main()
 {
-	//这段代码就这么点，我还花了快十分钟，真想一巴掌呼死自己
 	int i = 0;
 	int j = 0;
 	char arr[SIZE]={0};
 	printf("enter chars flow: ");
-	//关于vs的io函数新特性可以在遇到问题时去查就行
+	//关于vs的新io函数scanf_s
 	while (scanf_s("%c", &arr[i],sizeof(char)) && arr[i++]!='\n');
-	//下面这句要是不加if限定的话，i可能会等于-1，这样会访问到不该访问的内存
-	//我寻思着这敲个代码怎么这么多坑
 	if (i > 0) arr[--i] = '\0';
 	for (j = i - 1; j > -1; printf("%c", arr[j--]));
 	return 0;
