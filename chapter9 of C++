@@ -13,7 +13,6 @@ struct Golf {
 	int handicap;
 };
 
-//在这个位置可以加上对应的函数说明
 void SetGolf(Golf& g, const char* name, int hc);
 //输入的fullname中可以有空格，换行或空行结束输入。输入别少于
 //3组，mian里测试函数时默认至少3组数据
@@ -218,4 +217,4 @@ int main()
 	std::cout << "Done.";
 	return 0;
 }
-//以后就正式进入类了
+//从这以后就算正式进入类了
